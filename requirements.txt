@@ -1,0 +1,4 @@
+greenlet==1.1.2
+pkg_resources==0.0.0
+pyaml
+SQLAlchemy==1.4.2

@@ -1,0 +1,59 @@
+Nodes
+- UID <int>
+	Every node has an ID.
+	Masternode UID=0.
+- Parent <int>
+	UID of the node it belongs to
+- Children <List>
+	List of child node UIDs.
+- Label <string>
+	The text displayed on the node.
+	0 - 20 Chars
+- Note
+	The pop-up text
+	1 - 100 Chars
+- Document <filepath: string>
+	A document that can be opened on a side panel.
+	Markdown / Text /
+	Maybe other filetypes that are opened in their default programs?
+		E.g. Mp3, JPG, WordDocuments.
+- Colour.
+- Hidden <Bool>
+	Default False
+
+- Hide Children <Bool>
+	Default False.
+	True --> Recursively sets all child nodes Hidden to true.
+
+-- toggleHideChildren
+-- toggleHide
+-- SetColour(Colour: string)
+	Default=White.
+-- setDocument(doc: string)
+	Default=None
+-- setNote(note: string)
+	Default=None)
+-- setLabel(label: string)
+	Default=None
+
+
+
+
+
+
+
+
+
+- Create Node (parent=None)
+	Creates a child node of the current selection.
+	No selection --> Creates a master node.
+
+- Delete Node (uid)
+- updateLabel (uid, text='')
+- updateNote (uid, text='')
+- updatedoc (uid, text='')
+- updateColour (uid, colour='#ffffff')
+
+- toggleHideChildren(uid)
+	If children are hidden, show. VV.
+
