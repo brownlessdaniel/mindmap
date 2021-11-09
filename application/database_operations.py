@@ -19,9 +19,9 @@ def deleteDatabase(args=None):
 
     return {'status':'success','msg':'database deleted!'}
 
-
 @process_output.formatOutput
-def refreshDatabase(args,sample: bool=None):
+@process_output.outputSettings
+def refreshDatabase(sample: bool=None):
     '''
     Deletes all data stored in db. If sample, populates db with sample data.
     Returns dictionary.
