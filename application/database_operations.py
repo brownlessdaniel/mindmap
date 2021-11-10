@@ -5,31 +5,31 @@ from application import base, session, Node, process_output
 
 
 
-@process_output.outputSettings
-@process_output.formatOutput
+# @process_output.formatOutput
+# @process_output.outputSettings
 def deleteDatabase(args=None):
     '''
     Deletes the db
     Returns dictionary.
     '''
-    cwd = Path.cwd()
-    if not cwd.glob("tagdb.db") != 0:
+    if len(list(Path.cwd().glob("*.db"))) == 0:
         return {'status':'failure','msg':'database could not be found'}
-    [item.unlink() for item in cwd.glob("tagdb.db")]
+    else:
+        [item.unlink() for item in list(Path.cwd.glob("mindmap.db"))]
+        # return list(Path.cwd().glob("*.db"))
+        return {'status':'success','msg':'database deleted!'}
 
-    return {'status':'success','msg':'database deleted!'}
 
 @process_output.formatOutput
 @process_output.outputSettings
-def refreshDatabase(sample: bool=None):
+def refreshDatabase(args):
     '''
     Deletes all data stored in db. If sample, populates db with sample data.
     Returns dictionary.
     '''
     base.metadata.drop_all()
     base.metadata.create_all()
-
-    if sample:
+    if args['sample']:
         parent = Node(master=True,label='MasterNode')
         child1 = Node(label='child1Node',parent=1)
         child2 = Node(label='child2Node',parent=1)

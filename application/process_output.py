@@ -1,5 +1,7 @@
 import json
 import yaml
+from pathlib import Path
+import os
 from collections import OrderedDict
 from application import base, session, Node
 from application import config
@@ -57,16 +59,19 @@ def describe(filter=None):
     Allows filtering.
     '''
     output = {}
-    for n in session.query(Node).all():
-        attributes = {}
-        
-        attributes['master']=n.master
-        attributes['parent']=n.parent
-        attributes['label']=n.label
-        attributes['note']=n.note
-        attributes['doc']=n.doc
-        attributes['colour']=n.colour
-        attributes['hidden']=n.hidden
-        attributes['hide_children']=n.hide_children
-        output[n.uid]=attributes
+    if len(list(Path.cwd().glob("*.db"))) == 0:
+        output = 'asdf'
+    else:
+        for n in session.query(Node).all():
+            attributes = {}
+            
+            attributes['master']=n.master
+            attributes['parent']=n.parent
+            attributes['label']=n.label
+            attributes['note']=n.note
+            attributes['doc']=n.doc
+            attributes['colour']=n.colour
+            attributes['hidden']=n.hidden
+            attributes['hide_children']=n.hide_children
+            output[n.uid]=attributes
     return output
