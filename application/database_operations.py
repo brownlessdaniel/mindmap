@@ -3,20 +3,17 @@ from collections import OrderedDict
 from application import base, session, Node, process_output
 
 
-
-
-# @process_output.formatOutput
-# @process_output.outputSettings
+@process_output.formatOutput
+@process_output.outputSettings
 def deleteDatabase(args=None):
     '''
     Deletes the db
     Returns dictionary.
-    '''
-    if len(list(Path.cwd().glob("*.db"))) == 0:
+    '''    
+    if len(list(Path.cwd().glob("mindmap.db"))) == 0:
         return {'status':'failure','msg':'database could not be found'}
     else:
-        [item.unlink() for item in list(Path.cwd.glob("mindmap.db"))]
-        # return list(Path.cwd().glob("*.db"))
+        [item.unlink() for item in Path.cwd().glob("mindmap.db")]
         return {'status':'success','msg':'database deleted!'}
 
 
