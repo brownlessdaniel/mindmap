@@ -11,28 +11,17 @@ basedir=Path(__file__).parent.absolute()
 config=ConfigParser()
 config.read('application/config.ini')
 
-
-# banned_words=config['settings']['bannedwords']
-
 # Init database
 base=declarative_base()
-# db_path = str(config['settings']['databasepath']).strip()
-# if db_path[-1] == '/':
-#     db_path = db_path[:-1]
+db_path = str(config['settings']['databasepath']).strip()
+if db_path[-1] == '/':
+    db_path = db_path[:-1]
 
-# engine = create_engine(f'sqlite:///{db_path}/tagdb.db')
-engine = create_engine('sqlite:///mindmap.db')
+engine = create_engine(f'sqlite:///{db_path}/mindmap.db')
 base.metadata.bind=engine
 session=Session(engine)
 m=MetaData()
 m.reflect(engine)
-
-
-# association = Table('association', base.metadata,
-#     Column('id',Integer,primary_key=True),
-#     Column('object_id', Integer, ForeignKey('object.id')),
-#     Column('tag_id', Integer, ForeignKey('tag.id'))
-# )
 
 class Node(base):
     '''
