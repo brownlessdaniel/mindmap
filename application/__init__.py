@@ -11,9 +11,6 @@ basedir=Path(__file__).parent.absolute()
 config=ConfigParser()
 config.read('application/config.ini')
 
-
-# banned_words=config['settings']['bannedwords']
-
 # Init database
 base=declarative_base()
 db_path = str(config['settings']['databasepath']).strip()
@@ -21,7 +18,6 @@ if db_path[-1] == '/':
     db_path = db_path[:-1]
 
 engine = create_engine(f'sqlite:///{db_path}/mindmap.db')
-# engine = create_engine('sqlite:///mindmap.db')
 base.metadata.bind=engine
 session=Session(engine)
 m=MetaData()
