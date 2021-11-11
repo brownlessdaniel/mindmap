@@ -16,7 +16,6 @@ def deleteDatabase(args=None):
         [item.unlink() for item in Path.cwd().glob("mindmap.db")]
         return {'status':'success','msg':'database deleted!'}
 
-
 @process_output.formatOutput
 @process_output.outputSettings
 def refreshDatabase(args):
@@ -37,32 +36,18 @@ def refreshDatabase(args):
 
         return {'status':'success','msg':'database refreshed with sample data!'}
     
-    return {'status':'success','msg':'database refreshed!'}
-
-
+    return {'status':'success','msg':'database refreshed!'} 
 
 @process_output.formatOutput
+@process_output.outputSettings
 def describe(filter=None):
     '''
     Outputs entire contents of database.
     Allows filtering.
     '''
     output = OrderedDict()
+
     for n in session.query(Node).all():
-        attributes = OrderedDict()
-        
-        attributes['master']=n.master
-        attributes['parent']=n.parent
-        attributes['label']=n.label
-        attributes['note']=n.note
-        attributes['doc']=n.doc
-        attributes['colour']=n.colour
-        attributes['hidden']=n.hidden
-        attributes['hide_children']=n.hide_children
-        output[n.uid]=attributes
+        output[n.uid] = n.getAttrsDict()
+
     return output
-
-
-def findChildren(node):
-    pass # Hmm
-    

@@ -58,20 +58,9 @@ def describe(filter=None):
     Outputs entire contents of database.
     Allows filtering.
     '''
-    output = {}
-    if len(list(Path.cwd().glob("*.db"))) == 0:
-        output = 'asdf'
-    else:
-        for n in session.query(Node).all():
-            attributes = {}
-            
-            attributes['master']=n.master
-            attributes['parent']=n.parent
-            attributes['label']=n.label
-            attributes['note']=n.note
-            attributes['doc']=n.doc
-            attributes['colour']=n.colour
-            attributes['hidden']=n.hidden
-            attributes['hide_children']=n.hide_children
-            output[n.uid]=attributes
+    output = OrderedDict()
+
+    for n in session.query(Node).all():
+        output[n.uid] = n.getAttrsDict()
+
     return output

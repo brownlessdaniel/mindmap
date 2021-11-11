@@ -1,8 +1,9 @@
 from pathlib import Path
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Table
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import create_engine, MetaData, inspect
 from sqlalchemy.orm import declarative_base, Session, relationship, backref
 from configparser import ConfigParser
+from collections import OrderedDict
 
 
 basedir=Path(__file__).parent.absolute()
@@ -39,11 +40,20 @@ class Node(base):
     hidden = Column(Boolean, default=False)
     hide_children = Column(Boolean, default=False)
 
-    def findChildren(uid):
+    def getColumnHeaders(self):
+        '''
+        Returns list of attributes.
+        '''
+        inspector = inspect(self)
+        return [c_attr.key for c_attr in inspector.mapper.column_attrs]
+
+    def getAttrsDict(self):
+        return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
+
+    def findChildren(self):
         '''
         Query db for all nodes with parent=uid.
         Return list of child uids.
         '''
         nodes = [n.uid for n in session.query(Node).filter_by(parent=uid)]
         return nodes
-
