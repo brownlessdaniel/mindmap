@@ -20,6 +20,8 @@ class MyNamespace(Namespace):
         '''
         output = {}
         for kwarg in self._get_kwargs()[1:]:
-            output[kwarg[0]] = kwarg[1]
-        
+            try:
+                output[kwarg[0]] = kwarg[1][0]
+            except TypeError:
+                output[kwarg[0]] = kwarg[1]
         return output

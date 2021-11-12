@@ -26,7 +26,8 @@ def refreshDatabase(args):
     base.metadata.drop_all()
     base.metadata.create_all()
     if args['sample']:
-        parent = Node(master=True,label='MasterNode')
+        # parent = Node(master=True,label='MasterNode')
+        parent = Node(label='MasterNode', parent=0)
         child1 = Node(label='child1Node',parent=1)
         child2 = Node(label='child2Node',parent=1)
         session.add(parent)
@@ -36,7 +37,7 @@ def refreshDatabase(args):
 
         return {'status':'success','msg':'database refreshed with sample data!'}
     
-    return {'status':'success','msg':'database refreshed!'} 
+    return {'status':'success','msg':'database refreshed!'}
 
 @process_output.formatOutput
 @process_output.outputSettings
@@ -51,3 +52,12 @@ def describe(filter=None):
         output[n.uid] = n.getAttrsDict()
 
     return output
+
+@process_output.formatOutput
+@process_output.outputSettings
+def createNode(args):
+    n = Node(parent=args.get('parent'),label=args['label'])
+    session.add(n)
+    session.commit()
+    return {'status':'success','msg':'node created!'}
+    

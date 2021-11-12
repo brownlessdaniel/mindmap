@@ -31,7 +31,7 @@ class Node(base):
     '''
     __tablename__ = 'node'
     uid = Column(Integer, primary_key=True) # Should auto-increment    
-    master = Column(Boolean,default=False)
+    # master = Column(Boolean,default=False)
     parent = Column(Integer)    
     label = Column(String, default='')
     note = Column(String, default='')
