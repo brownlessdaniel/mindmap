@@ -47,13 +47,4 @@ class Node(base):
         inspector = inspect(self)
         return [c_attr.key for c_attr in inspector.mapper.column_attrs]
 
-    def getAttrsDict(self):
-        return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
-
-    def findChildren(self):
-        '''
-        Query db for all nodes with parent=uid.
-        Return list of child uids.
-        '''
-        nodes = [n.uid for n in session.query(Node).filter_by(parent=uid)]
-        return nodes
+    

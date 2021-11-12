@@ -43,6 +43,7 @@ directory = {
     'update-config': config_writer.updateConfig,
     'describe': database_operations.describe,
     'create-node': database_operations.createNode
+    'delete-node': database_operations.deleteNode
 }
 
 print(directory[command](args))

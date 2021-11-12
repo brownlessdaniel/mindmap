@@ -1,5 +1,6 @@
 from pathlib import Path
 from collections import OrderedDict
+from sqlalchemy import inspect
 from application import base, session, Node, process_output
 
 
@@ -49,15 +50,29 @@ def describe(filter=None):
     output = OrderedDict()
 
     for n in session.query(Node).all():
-        output[n.uid] = n.getAttrsDict()
+        output[n.uid] = {c.key: getattr(n, c.key) for c in inspect(n).mapper.column_attrs}
 
     return output
 
 @process_output.formatOutput
 @process_output.outputSettings
 def createNode(args):
+    '''
+    Creates a child node, given the parent node uid.
+    Requires a label.
+    Returns success message
+    '''
     n = Node(parent=args.get('parent'),label=args['label'])
     session.add(n)
     session.commit()
     return {'status':'success','msg':'node created!'}
     
+def deleteNode(args):
+    '''
+    Selects a node based on it's uid, and deletes it.
+    returns a success message
+    '''
+    n = session.query(Node).filter_by(uid=args.get('uid')).first()
+    session.remove(n)
+    session.commit()
+    return {'status':'success','msg':'node delete!'}

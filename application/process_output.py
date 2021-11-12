@@ -61,6 +61,6 @@ def describe(filter=None):
     output = OrderedDict()
 
     for n in session.query(Node).all():
-        output[n.uid] = n.getAttrsDict()
+        output[n.uid] = {c.key: getattr(n, c.key) for c in inspect(n).mapper.column_attrs}
 
     return output
