@@ -3,8 +3,9 @@ import yaml
 from pathlib import Path
 import os
 from collections import OrderedDict
-from application import base, session, Node
-from application import config
+from sqlalchemy import inspect
+from application import base, session, Node, config
+
 # from application.database_operations import describe
 
 def formatOutput(func):
@@ -44,8 +45,8 @@ def outputSettings(func):
 
     def wrapper(*args, **kwargs):
         # func(*args, **kwargs)
-        if descriptive == 'true':
-            output = func(*args, **kwargs), describe()
+        if descriptive == 'true' and func.__name__ != 'describe':
+                output = func(*args, **kwargs), describe()
         else:
             output = func(*args, **kwargs)
         return output
@@ -61,6 +62,6 @@ def describe(filter=None):
     output = OrderedDict()
 
     for n in session.query(Node).all():
-        output[n.uid] = {c.key: getattr(n, c.key) for c in inspect(n).mapper.column_attrs}
+        output[n.id] = {c.key: getattr(n, c.key) for c in inspect(n).mapper.column_attrs}
 
     return output

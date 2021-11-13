@@ -24,21 +24,41 @@ session=Session(engine)
 m=MetaData()
 m.reflect(engine)
 
+association = Table('association', base.metadata,
+    Column('id',Integer,primary_key=True),
+    Column('node_id', Integer, ForeignKey('node.id')),
+    Column('tag_id', Integer, ForeignKey('tag.id'))
+)
+
+class Tag(base):
+    __tablename__ = 'tag'
+    id = Column(Integer, primary_key=True)
+    tag_key = Column(String)
+    tag_value = Column(String)
+    nodes = relationship(
+        "Node",
+        secondary=association,
+        lazy='dynamic',
+        back_populates="tags")
+
+
 class Node(base):
     '''
     The individual boxes.
     If master, parents = none (?0?)
     '''
     __tablename__ = 'node'
-    uid = Column(Integer, primary_key=True) # Should auto-increment    
+    id = Column(Integer, primary_key=True) # Should auto-increment    
     # master = Column(Boolean,default=False)
     parent = Column(Integer)    
     label = Column(String, default='')
     note = Column(String, default='')
     doc = Column(String, default='')
+    tags = relationship("Tag", secondary=association, lazy='dynamic', back_populates="nodes")
     colour = Column(String, default='#ffffff')
     hidden = Column(Boolean, default=False)
     hide_children = Column(Boolean, default=False)
+    
 
     def getColumnHeaders(self):
         '''
